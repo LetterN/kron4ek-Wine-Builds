@@ -22,8 +22,8 @@ fi
 # here, but this script has only been tested with Ubuntu 18.04 Bionic
 export CHROOT_DISTRO="bionic"
 export CHROOT_MIRROR="https://ftp.uni-stuttgart.de/ubuntu/"
-export CHROOT_MIRROR_MSFT="https://azure.archive.ubuntu.com/ubuntu/"
-export CHROOT_MIRROR_UBNT="https://security.ubuntu.com/ubuntu/"
+export CHROOT_MIRROR_MSFT="http://azure.archive.ubuntu.com/ubuntu/"
+export CHROOT_MIRROR_UBNT="http://security.ubuntu.com/ubuntu/"
 
 # Set your preferred path for storing chroots
 # Also don't forget to change the path to the chroots in the build_wine.sh
