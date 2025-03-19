@@ -3,26 +3,37 @@ name: Wine NTSYNC CI
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
       - name: Download artifact
         id: download-artifact
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v9
         with:
           workflow: bootstraps.yml
           workflow_conclusion: success
           path: /opt
+      - name: Install Packages
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install debootstrap perl git wget xz-utils bubblewrap autoconf
+      - name: Unpack chroot
+        run: |
+          sudo tar -C /opt -xpf /opt/Bootstraps/bootstraps.tar.xz
       - name: Build Wine
         run: |
-          sudo apt update
-          sudo apt install debootstrap perl git wget xz-utils bubblewrap autoconf
-          sudo tar -C /opt -xpf /opt/Bootstraps/bootstraps.tar.xz
           chmod +x build_wine.sh
           WINE_BRANCH=staging-tkg-ntsync ./build_wine.sh
+      - name: Postbuild Wine
+        run: |
           sha256sum *.tar.xz
       - uses: actions/upload-artifact@v4
         with:
