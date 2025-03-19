@@ -210,8 +210,8 @@ EOF
 
 mkdir -p "${MAINDIR}"
 
-debootstrap --arch amd64 $CHROOT_DISTRO "${CHROOT_X64}" $CHROOT_MIRROR
-debootstrap --arch i386 $CHROOT_DISTRO "${CHROOT_X32}" $CHROOT_MIRROR
+debootstrap --arch amd64 $CHROOT_DISTRO "${CHROOT_X64}" $CHROOT_MIRROR_MSFT
+debootstrap --arch i386 $CHROOT_DISTRO "${CHROOT_X32}" $CHROOT_MIRROR_MSFT
 
 create_build_scripts
 prepare_chroot 32
