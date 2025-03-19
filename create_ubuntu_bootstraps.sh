@@ -99,6 +99,8 @@ echo deb-src '${CHROOT_MIRROR}' ${CHROOT_DISTRO} main universe >> /etc/apt/sourc
 echo deb-src '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-updates main universe >> /etc/apt/sources.list
 echo deb-src '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-security main universe >> /etc/apt/sources.list
 
+echo "::group::Install Dependencies"
+
 apt-get update
 apt-get -y install nano
 apt-get -y install locales
@@ -122,6 +124,10 @@ apt-get -y purge libvulkan-dev libvulkan1 libsdl2-dev libsdl2-2.0-0 libpcap0.8-d
 apt-get -y purge *gstreamer* --purge --autoremove
 apt-get -y clean
 apt-get -y autoclean
+
+echo "::endgroup::"
+
+echo "::group::Install Libraries"
 export PATH="/usr/local/bin:\${PATH}"
 mkdir /opt/build_libs
 cd /opt/build_libs
@@ -156,6 +162,10 @@ tar xf ccache.tar.gz
 tar xf libglvnd.tar.gz
 tar xf meson.tar.gz -C /usr/local
 ln -s /usr/local/meson-${meson_version}/meson.py /usr/local/bin/meson
+
+echo "::endgroup::"
+
+echo "::group::Compile Libraries"
 bash mingw-w64-build x86_64
 bash mingw-w64-build i686
 export CC=gcc-11
@@ -201,6 +211,8 @@ meson setup build
 meson compile -C build
 meson install -C build
 cd /opt && rm -r /opt/build_libs
+
+echo "::endgroup::"
 EOF
 
 	chmod +x "${MAINDIR}"/prepare_chroot.sh
