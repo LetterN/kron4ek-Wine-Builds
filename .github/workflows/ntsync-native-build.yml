@@ -3,6 +3,9 @@ name: Build Wine tkg-ntsync (NoBootstrap)
 on:
   workflow_dispatch:
 
+env:
+  WINE_BUILD_OPTIONS: "--without-ldap --without-oss --disable-winemenubuilder --disable-win16 --disable-test"
+  
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -17,7 +20,21 @@ jobs:
         with:
           repository: Kron4ek/wine-tkg
           ref: ntsync
-      - name: Build Wine
+          path: ${{ env.WORK_DIR }}/wine
+      - name: Build Wine (64)
         run: |
-          ./configure
-          make
+          cp ${{ env.WORK_DIR }}/wine ${{ env.WORK_DIR }}/wine-64
+          cd ${{ env.WORK_DIR }}/wine-64
+          ./configure --enable-win64 $WINE_BUILD_OPTIONS --prefix ${{ env.WORK_DIR }}/wine-amd64
+          make -j$(nproc)
+          cd ${{ env.WORK_DIR }}
+      - name: Build Wine Tools (32)
+        run: |
+          cp ${{ env.WORK_DIR }}/wine ${{ env.WORK_DIR }}/wine-32
+          cd ${{ env.WORK_DIR }}/wine-32
+          ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ env.WORK_DIR }}/wine-64 --prefix ${{ env.WORK_DIR }}/wine-x86
+          make -j$(nproc)
+          cd ${{ env.WORK_DIR }}
+      - uses: action/upload-artifact@v4
+        with:
+          path: ${{ env.WORK_DIR }}/wine-64
