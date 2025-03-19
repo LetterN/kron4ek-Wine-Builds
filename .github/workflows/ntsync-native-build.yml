@@ -23,14 +23,14 @@ jobs:
           path: ${{ github.workspace }}/wine
       - name: Build Wine (64)
         run: |
-          cp ${{ github.workspace }}/wine ${{ github.workspace }}/wine-64
+          cp -r ${{ github.workspace }}/wine ${{ github.workspace }}/wine-64
           cd ${{ github.workspace }}/wine-64
           ./configure --enable-win64 $WINE_BUILD_OPTIONS --prefix ${{ github.workspace }}/wine-amd64
           make -j$(nproc)
           cd ${{ github.workspace }}
       - name: Build Wine Tools (32)
         run: |
-          cp ${{ github.workspace }}/wine ${{ github.workspace }}/wine-32
+          cp -r ${{ github.workspace }}/wine ${{ github.workspace }}/wine-32
           cd ${{ github.workspace }}/wine-32
           ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ github.workspace }}/wine-64 --prefix ${{ github.workspace }}/wine-x86
           make -j$(nproc)
