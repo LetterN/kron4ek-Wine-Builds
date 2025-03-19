@@ -20,21 +20,21 @@ jobs:
         with:
           repository: Kron4ek/wine-tkg
           ref: ntsync
-          path: ${{ env.WORK_DIR }}/wine
+          wine: wine
       - name: Build Wine (64)
         run: |
-          cp ${{ env.WORK_DIR }}/wine ${{ env.WORK_DIR }}/wine-64
-          cd ${{ env.WORK_DIR }}/wine-64
-          ./configure --enable-win64 $WINE_BUILD_OPTIONS --prefix ${{ env.WORK_DIR }}/wine-amd64
+          cp ${{ github.workspace }}/wine ${{ github.workspace }}/wine-64
+          cd ${{ github.workspace }}/wine-64
+          ./configure --enable-win64 $WINE_BUILD_OPTIONS --prefix ${{ github.workspace }}/wine-amd64
           make -j$(nproc)
-          cd ${{ env.WORK_DIR }}
+          cd ${{ github.workspace }}
       - name: Build Wine Tools (32)
         run: |
-          cp ${{ env.WORK_DIR }}/wine ${{ env.WORK_DIR }}/wine-32
-          cd ${{ env.WORK_DIR }}/wine-32
-          ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ env.WORK_DIR }}/wine-64 --prefix ${{ env.WORK_DIR }}/wine-x86
+          cp ${{ github.workspace }}/wine ${{ github.workspace }}/wine-32
+          cd ${{ github.workspace }}/wine-32
+          ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ github.workspace }}/wine-64 --prefix ${{ github.workspace }}/wine-x86
           make -j$(nproc)
-          cd ${{ env.WORK_DIR }}
+          cd ${{ github.workspace }}
       - uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.WORK_DIR }}/wine-64
+          path: ${{ github.workspace }}/wine-64
