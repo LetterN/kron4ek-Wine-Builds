@@ -35,6 +35,6 @@ jobs:
           ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ env.WORK_DIR }}/wine-64 --prefix ${{ env.WORK_DIR }}/wine-x86
           make -j$(nproc)
           cd ${{ env.WORK_DIR }}
-      - uses: action/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           path: ${{ env.WORK_DIR }}/wine-64
