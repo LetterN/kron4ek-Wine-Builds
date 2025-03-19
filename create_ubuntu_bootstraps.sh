@@ -22,6 +22,8 @@ fi
 # here, but this script has only been tested with Ubuntu 18.04 Bionic
 export CHROOT_DISTRO="bionic"
 export CHROOT_MIRROR="https://ftp.uni-stuttgart.de/ubuntu/"
+export CHROOT_MIRROR_MSFT="https://azure.archive.ubuntu.com/ubuntu/"
+export CHROOT_MIRROR_UBNT="https://security.ubuntu.com/ubuntu/"
 
 # Set your preferred path for storing chroots
 # Also don't forget to change the path to the chroots in the build_wine.sh
@@ -88,6 +90,15 @@ apt-get -y install locales
 echo ru_RU.UTF_8 UTF-8 >> /etc/locale.gen
 echo en_US.UTF_8 UTF-8 >> /etc/locale.gen
 locale-gen
+
+echo deb '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO} main universe > /etc/apt/sources.list
+echo deb-src '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO} main universe > /etc/apt/sources.list
+echo deb '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO}-updates main universe > /etc/apt/sources.list
+echo deb-src '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO}-updates main universe > /etc/apt/sources.list
+
+echo deb '${CHROOT_MIRROR_UBNT}' ${CHROOT_DISTRO}-security main universe > /etc/apt/sources.list
+echo deb-src '${CHROOT_MIRROR_UBNT}' ${CHROOT_DISTRO}-security main universe > /etc/apt/sources.list
+
 echo deb '${CHROOT_MIRROR}' ${CHROOT_DISTRO} main universe > /etc/apt/sources.list
 echo deb '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-updates main universe >> /etc/apt/sources.list
 echo deb '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-security main universe >> /etc/apt/sources.list
