@@ -27,7 +27,12 @@ jobs:
           cd /opt
           sudo tar -I "xz -T0 -9" -cpf bootstraps.tar.xz chroots
           sha256sum *.tar.xz
-      - uses: actions/upload-artifact@v4
+      - name: Cache bootstraps
+        uses: actions/cache@v4
         with:
-          name: Bootstraps
-          path: /opt/bootstraps.tar.xz
+          path: /opt/chroots
+          key: ${{ runner.os }}-debootstrap-${{ hashFiles('build_wine.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-debootstrap-
+          save-always: true
+
