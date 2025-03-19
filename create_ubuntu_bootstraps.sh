@@ -222,8 +222,13 @@ EOF
 
 mkdir -p "${MAINDIR}"
 
+echo "::group::Setup debootstrap x64"
 debootstrap --arch amd64 $CHROOT_DISTRO "${CHROOT_X64}" $CHROOT_MIRROR_MSFT
+echo "::endgroup::"
+
+echo "::group::Setup debootstrap x32"
 debootstrap --arch i386 $CHROOT_DISTRO "${CHROOT_X32}" $CHROOT_MIRROR_MSFT
+echo "::endgroup::"
 
 create_build_scripts
 prepare_chroot 32
