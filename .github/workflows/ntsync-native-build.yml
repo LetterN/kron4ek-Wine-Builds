@@ -20,7 +20,7 @@ jobs:
         with:
           repository: Kron4ek/wine-tkg
           ref: ntsync
-          wine: wine
+          path: ${{ github.workspace }}/wine
       - name: Build Wine (64)
         run: |
           cp ${{ github.workspace }}/wine ${{ github.workspace }}/wine-64
