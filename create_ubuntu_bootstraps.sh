@@ -84,13 +84,6 @@ create_build_scripts () {
 	cat <<EOF > "${MAINDIR}"/prepare_chroot.sh
 #!/bin/bash
 
-apt-get update
-apt-get -y install nano
-apt-get -y install locales
-echo ru_RU.UTF_8 UTF-8 >> /etc/locale.gen
-echo en_US.UTF_8 UTF-8 >> /etc/locale.gen
-locale-gen
-
 echo deb '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO} main universe > /etc/apt/sources.list
 echo deb-src '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO} main universe > /etc/apt/sources.list
 echo deb '${CHROOT_MIRROR_MSFT}' ${CHROOT_DISTRO}-updates main universe > /etc/apt/sources.list
@@ -105,7 +98,14 @@ echo deb '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-security main universe >> /etc/apt/
 echo deb-src '${CHROOT_MIRROR}' ${CHROOT_DISTRO} main universe >> /etc/apt/sources.list
 echo deb-src '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-updates main universe >> /etc/apt/sources.list
 echo deb-src '${CHROOT_MIRROR}' ${CHROOT_DISTRO}-security main universe >> /etc/apt/sources.list
+
 apt-get update
+apt-get -y install nano
+apt-get -y install locales
+echo ru_RU.UTF_8 UTF-8 >> /etc/locale.gen
+echo en_US.UTF_8 UTF-8 >> /etc/locale.gen
+locale-gen
+
 apt-get -y upgrade
 apt-get -y dist-upgrade
 apt-get -y install software-properties-common
