@@ -28,6 +28,7 @@ jobs:
         run: |
           cp -r ${{ github.workspace }}/wine ${{ github.workspace }}/wine-64
           cd ${{ github.workspace }}/wine-64
+          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           ./configure --enable-win64 $WINE_BUILD_OPTIONS --prefix ${{ github.workspace }}/wine-amd64
           make -j$(nproc)
           cd ${{ github.workspace }}
@@ -35,6 +36,7 @@ jobs:
         run: |
           cp -r ${{ github.workspace }}/wine ${{ github.workspace }}/wine-32
           cd ${{ github.workspace }}/wine-32
+          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ github.workspace }}/wine-64 --prefix ${{ github.workspace }}/wine-amd64
           make -j$(nproc)
           cd ${{ github.workspace }}
