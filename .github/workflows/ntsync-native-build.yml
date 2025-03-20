@@ -30,7 +30,7 @@ jobs:
           cd ${{ github.workspace }}/wine-64
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           ./configure --enable-win64 $WINE_BUILD_OPTIONS --prefix ${{ github.workspace }}/wine-amd64
-          make -j$(nproc)
+          sudo make -j$(nproc) install
           cd ${{ github.workspace }}
       - name: Build Wine (32)
         run: |
@@ -38,7 +38,7 @@ jobs:
           cd ${{ github.workspace }}/wine-32
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           ./configure $WINE_BUILD_OPTIONS --with-wine64=${{ github.workspace }}/wine-64 --prefix ${{ github.workspace }}/wine-amd64
-          make -j$(nproc)
+          sudo make -j$(nproc) install
           cd ${{ github.workspace }}
       - uses: actions/upload-artifact@v4
         with:
